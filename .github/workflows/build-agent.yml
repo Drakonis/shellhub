@@ -112,8 +112,6 @@ jobs:
               docker manifest annotate shellhubio/agent:${{ github.sha }} shellhubio/agent:${{ github.sha }}-${archname[i]} --os linux --arch ${arch[i]} --variant ${variant[i]}
             done
 
-            echo "Pushing multiarch manifest"
-            docker manifest push shellhubio/agent:${{ github.sha }}
 
       - name: build multiarch image from github tag
         if: contains(github.ref, 'refs/tags/v')
@@ -134,11 +132,3 @@ jobs:
               echo "Running ${archname[i]} manifest annotation"
               docker manifest annotate shellhubio/agent:${{ env.RELEASE_VERSION }} shellhubio/agent:${{ env.RELEASE_VERSION }}-${archname[i]} --os linux --arch ${arch[i]} --variant ${variant[i]}
             done
-
-            echo "Pushing multiarch manifest"
-            docker manifest push shellhubio/agent:${{ env.RELEASE_VERSION }}
-        - name: upload artifacts
-          uses: actions/upload-artifact@v3
-          with:
-            name: release-${{ github.run_id }}
-            path: release/*
