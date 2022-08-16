@@ -138,6 +138,7 @@ jobs:
 
             #echo "Pushing multiarch manifest"
             #docker manifest push shellhubio/agent:${{ env.RELEASE_VERSION }}
+
   draft:
     if: github.event_name != 'pull_request'
     needs: build
