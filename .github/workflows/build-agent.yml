@@ -63,6 +63,8 @@ jobs:
           docker buildx build ${{ env.BUILD_OPTION }} -f agent/Dockerfile.${{ matrix.dockerfile }} \
             --tag shellhubio/agent:${{ github.sha }}-${{ matrix.dockerfile }} \
             --platform linux/${{ matrix.arch }} .
+            docker image ls
+
 
       - name: build image from github tag
         if: "contains(github.ref, 'refs/tags/v')"
@@ -71,8 +73,12 @@ jobs:
             --tag shellhubio/agent:${{ env.RELEASE_VERSION }}-${{ matrix.dockerfile }} \
             --build-arg SHELLHUB_VERSION=${{ env.RELEASE_VERSION }} \
             --platform linux/${{ matrix.arch }} .
+            docker image ls
       - name: export rootfs
-        run: docker export $(docker create shellhubio/agent:${{ env.RELEASE_VERSION }}-${{ matrix.dockerfile }}) | gzip > rootfs-${{ matrix.dockerfile }}.tar.gz
+        run: |
+          docker export $(docker create shellhubio/agent:${{ env.RELEASE_VERSION }}-${{ matrix.dockerfile }}) | gzip > rootfs-${{ matrix.dockerfile }}.tar.gz
+          docker image ls
+
       - name: upload rootfs artifact
         uses: actions/upload-artifact@v3
         with:
