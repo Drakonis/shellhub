@@ -76,6 +76,7 @@ jobs:
         if: "contains(github.ref, 'refs/tags/v')"
         with:
           generate_release_notes: true
+          draft: true
   multiarch:
     if: github.event_name != 'pull_request'
     needs: build
