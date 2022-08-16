@@ -132,3 +132,9 @@ jobs:
               echo "Running ${archname[i]} manifest annotation"
               docker manifest annotate shellhubio/agent:${{ env.RELEASE_VERSION }} shellhubio/agent:${{ env.RELEASE_VERSION }}-${archname[i]} --os linux --arch ${arch[i]} --variant ${variant[i]}
             done
+        - name: Release
+          uses: softprops/action-gh-release@v1
+          if: "contains(github.ref, 'refs/tags/v')"
+          with:
+            generate_release_notes: true
+            draft: true
