@@ -71,7 +71,11 @@ jobs:
             --tag shellhubio/agent:${{ env.RELEASE_VERSION }}-${{ matrix.dockerfile }} \
             --build-arg SHELLHUB_VERSION=${{ env.RELEASE_VERSION }} \
             --platform linux/${{ matrix.arch }} .
-
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: "contains(github.ref, 'refs/tags/v')"
+        with:
+          generate_release_notes: true
   multiarch:
     if: github.event_name != 'pull_request'
     needs: build
@@ -132,3 +136,8 @@ jobs:
 
             echo "Pushing multiarch manifest"
             docker manifest push shellhubio/agent:${{ env.RELEASE_VERSION }}
+        - name: upload artifacts
+          uses: actions/upload-artifact@v3
+          with:
+            name: release-${{ github.run_id }}
+            path: release/*
