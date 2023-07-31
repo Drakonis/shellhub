@@ -151,7 +151,7 @@ jobs:
 
       - name: export rootfs
         run: |
-          cd ./agent && go mod vendor && tar cf shellhub-agent.tar.gz *
+          cd ./agent && go mod vendor && tar cf shellhub-agent.tar.gz * && move shellhub-agent.tar.gz ..
 
       - name: upload rootfs artifact
         uses: actions/upload-artifact@v3
