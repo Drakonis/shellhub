@@ -159,7 +159,6 @@ jobs:
           name: shellhub-agent
           path: shellhub-agent.tar.gz
   draft:
-    if: "contains(github.ref, 'refs/tags/v')"
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -189,7 +188,6 @@ jobs:
           name: shellhub-agent
       - name: release draft
         uses: softprops/action-gh-release@v1
-        if: "contains(github.ref, 'refs/tags/v')"
         with:
           draft: true
           generate_release_notes: true
