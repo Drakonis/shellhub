@@ -143,23 +143,23 @@ jobs:
             echo "Pushing multiarch manifest"
             docker manifest push shellhubio/agent:${{ env.RELEASE_VERSION }}
 
-  vendored-agent-tarball:
+  vendored-tarball:
     runs-on: ubuntu-20.04
     steps:
       - name: checkout code
         uses: actions/checkout@v3
 
-      - name: export rootfs
+      - name: export agent tarball
         run: |
           cd ./agent && go mod vendor && tar cf shellhub-agent.tar.gz * && mv shellhub-agent.tar.gz ..
 
-      - name: upload rootfs artifact
+      - name: upload agent tarball artifact
         uses: actions/upload-artifact@v3
         with:
           name: shellhub-agent
           path: shellhub-agent.tar.gz
   draft:
-    needs: build
+    needs: vendored-tarball
     runs-on: ubuntu-latest
     steps:
       - name: download amd64
