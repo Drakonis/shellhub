@@ -144,7 +144,6 @@ jobs:
             docker manifest push shellhubio/agent:${{ env.RELEASE_VERSION }}
 
   vendored-agent-tarball:
-    if: "contains(github.ref, 'refs/tags/v')"
     runs-on: ubuntu-20.04
     steps:
       - name: checkout code
